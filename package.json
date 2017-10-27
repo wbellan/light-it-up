@@ -1,0 +1,16 @@
+{
+  "name": "light-it-up",
+  "version": "1.0.0",
+  "description": "Show you team colors on your Hue lights.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Wardell Bellanger",
+  "license": "ISC",
+  "dependencies": {
+    "node-hue-api": "^2.4.2",
+    "underscore": "^1.8.3"
+  }
+}
