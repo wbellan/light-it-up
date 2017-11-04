@@ -15,9 +15,9 @@ var lightUp = (result) => {
         // https://teamcolorcodes.com/
         // Texas - BURNT ORANGE HEX COLOR: #BF5700; RGB: (191, 87, 0)
         // LSU - PURPLE HEX COLOR: #BF5700; RGB: (70, 29, 124)
-        api.setLightState(light.id, state.rgb(191, 87, 0))
-            .then(console.log(result))
-            .done();
+        api.setLightState(light.id, state.on().rgb(191, 87, 0))
+        .then(console.log(result))
+        .done();
     })
 }
 
