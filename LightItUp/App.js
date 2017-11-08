@@ -1,21 +1,52 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import BridgeService from './app/services/bridge';
+import { ActivityIndicator, StyleSheet, Text, View, ListView } from 'react-native';
 
 export default class App extends React.Component {
-  state = {
-    loaded: false
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true
+    }
   }
 
-  constructor() {
-    super();
-    BridgeService.load(v => this.setState({loaded: true}));
+  componentDidMount() {
+    return fetch('https://www.meethue.com/api/nupnp')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+        this.setState({
+          isLoading: false,
+          dataSource: ds.cloneWithRows(responseJson),
+        }, function () {
+          // do something with new state
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.titleText}>Light It Up</Text>
+          <Text>Discovering Bridges</Text>
+          <ActivityIndicator
+            animating={true}
+            size={'small'}
+            style={{ margin: 15 }} />
+        </View>
+      );
+    }
+
     return (
-      <View style={styles.container}>
-        {this.state.loaded ? <Text style={styles.titleText}>Light It Up</Text> : <Text>Discovering bridges...</Text>}
+      <View style={{flex: 1, paddingTop: 20}}>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={(rowData) => <Text>{rowData.internalipaddress}</Text>}
+        />
       </View>
     );
   }
